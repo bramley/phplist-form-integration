@@ -7,11 +7,15 @@ Tested up to: 2.1.3
 Stable tag: trunk
 Version:1.3
 
+
 Allows you to easily integrate the PHPList email subscribe form in your blog
 
 == Description ==
 
-This lightweight plugin for Wordpress 2.0 or 2.1 gives you the ability to easily allow users to subscribe to your newsletter or RSS blog feed from any page on your blog. Simply install the plug-in, configure your settings, and embed the comment <!--phplist form--> on any page on your blog. It’s easy and fast and does not require any further template modifications in PHPList or Wordpress.
+This lightweight plugin for Wordpress 2.0 or 2.1 gives you the ability to easily allow users to subscribe 
+to your newsletter or RSS blog feed from any page on your blog. Simply install the plug-in, configure your settings,
+and embed the comment <!--phplist form--> on any page on your blog. It’s easy and fast and does not require any 
+further template modifications in PHPList or Wordpress.
 
 == Installation ==
 
