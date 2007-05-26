@@ -1,12 +1,10 @@
 === WP PHPList ===
 Tags: phplist, integration, email newsletter
 Author:JesseHeap
-Donate link: http://projects.jesseheap.com
 Requires at least: 2.0.2
 Tested up to: 2.1.3
 Stable tag: trunk
 Version:1.3
-
 
 Allows you to easily integrate the PHPList email subscribe form in your blog
 
@@ -38,7 +36,6 @@ For more advanced users, who are comfortable editing template files, the form ca
             echo $content;?> `
 	    
 Detailed instructions available [here]http://projects.jesseheap.com/all-projects/wordpress-plugin-phplist-form-integration/#3
-
 
 == Demo ==
 See an example of this plugin at [Wedding Cake Newsletter Demo](http://blog.pinkcakebox.com/wordpress-plugin-demo/ "Wedding Gallery")
