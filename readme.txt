@@ -1,7 +1,5 @@
 === WP PHPList ===
 Tags: phplist, integration, email newsletter
-=== WP PHPList ===
-Tags: phplist, integration, email newsletter
 Author:JesseHeap
 Donate link: http://projects.jesseheap.com
 Requires at least: 2.0.2
