@@ -1,5 +1,6 @@
 === WP PHPList ===
 Tags: phplist, integration, email newsletter
+=== WP PHPList ===
 Author:JesseHeap
 Donate link: http://projects.jesseheap.com
 Requires at least: 2.0.2
@@ -7,7 +8,7 @@ Tested up to: 2.1.3
 Stable tag: trunk
 Version:1.3
 
-Allows you to easily integrate the PHPList subscribe form in your blog
+Allows you to easily integrate the PHPList email subscribe form in your blog
 
 == Description ==
 
