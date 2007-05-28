@@ -36,5 +36,9 @@ For more advanced users, who are comfortable editing template files, the form ca
 	    
 Detailed instructions available [here](http://projects.jesseheap.com/all-projects/wordpress-plugin-phplist-form-integration/#3)
 
+== Screenshots ==
+
+1. Screenshot 1
+
 == Demo ==
 See an example of this plugin at [Wedding Cake Newsletter Demo](http://blog.pinkcakebox.com/wordpress-plugin-demo/ "Wedding Gallery")
