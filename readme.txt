@@ -2,11 +2,11 @@
 Tags: phplist, integration, email newsletter
 Author:JesseHeap
 Requires at least: 2.0.2
-Tested up to: 2.1.3
+Tested up to: 2.2
 Stable tag: trunk
 Version:1.3
 
-Allows you to easily integrate the PHPList email subscribe form in your blog
+Allows you to easily integrate the PHPList email subscriber form in your blog
 
 == Description ==
 
