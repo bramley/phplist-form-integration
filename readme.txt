@@ -12,18 +12,18 @@ Allows you to easily integrate the PHPList email subscribe form in your blog
 
 This lightweight plugin for Wordpress 2.0 or 2.1 gives you the ability to easily allow users to subscribe 
 to your newsletter or RSS blog feed from any page on your blog. Simply install the plug-in, configure your settings,
-and embed the comment <!--phplist form--> on any page on your blog. It’s easy and fast and does not require any 
+and embed the comment `<!--phplist form-->` on any page on your blog. It’s easy and fast and does not require any 
 further template modifications in PHPList or Wordpress.
 
 == Installation ==
 
-**Pre-requisites
+*Pre-requisites
 Wordpress 2.0.x or 2.1 
 Phplist 2.10.2 or greater. (The plug-in may work with previous versions prior to 2.10.2 - let me know) 
 PHP 4.x with cURL support (Users have confirmed it also works in PHP 5.x) 
 
-**Quick Start Instructions
-Download plugin installation and upload phplist.php and phplist.cssto your plug-ins folder, usually /wp-content/plugins 
+*Quick Start Instructions
+Download plugin installation and upload phplist.php and phplist.css to your plug-ins folder, usually /wp-content/plugins 
 Login to wordpress administration panel and activate the plug-in (Under plug-ins). Plugin name is phplist. 
 Navigate to Options -> PHPList and fill in the General Settings configuration as instructed. (Optionally, you can configure the form settings as well - see detailed instructions for information) 
 The last step is to setup the form. If you are adding the subscriber form directly to any post or wordpress page then just add the following comment while inside the wordpress editor: 
