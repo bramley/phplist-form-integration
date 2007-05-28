@@ -7,10 +7,6 @@ Tested up to: 2.2
 Stable tag: trunk
 Version:1.24
 
-
-
-This plugin eases insertion of highslide js thumbnail viewer by inserting the required tags automatically
-
 == Description ==
 
 Highslide JS is a brilliant thumbnail viewer written in javascript. WP-Highslide is a wordpress plugin that 
