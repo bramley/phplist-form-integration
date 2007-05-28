@@ -1,11 +1,12 @@
 === WP PHPList ===
-Tags: phplist, integration, email newsletter
+Tags: highslide, image preview, thumbnail, images
 Author:JesseHeap
 Donate link: http://projects.jesseheap.com
 Requires at least: 2.0.2
 Tested up to: 2.2
 Stable tag: trunk
-Version:1.3
+Version:1.24
+
 
 
 This plugin eases insertion of highslide js thumbnail viewer by inserting the required tags automatically
