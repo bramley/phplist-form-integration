@@ -3,7 +3,7 @@ Tags: phplist, integration, email newsletter
 Author:JesseHeap
 Donate link: http://projects.jesseheap.com
 Requires at least: 2.0.2
-Tested up to: 2.3.3
+Tested up to: 2.7
 Stable tag: trunk
 Version:1.5
 
@@ -17,7 +17,7 @@ further template modifications in PHPList or Wordpress.
 == Installation ==
 
 *Pre-requisites*
-Wordpress 2.x.xs
+Wordpress 2.x
 Phplist 2.10.2 or greater. (Download at www.phplist.com)
 PHP 4.x or 5.x with cURL support 
 
