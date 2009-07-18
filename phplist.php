@@ -596,8 +596,7 @@ function phplist_css()
 	{
 	global $ver;
 	$phplist_wp_url = get_bloginfo('wpurl') . "/";
-	$phplist_wp_url = "http://blog.pinkcakebox.com/";
-	$installpath  = dirname('phplist/phplist.php'); // plugin_basename(dirname(__FILE__));
+	$installpath  =  plugin_basename(dirname(__FILE__));
 	if (strcmp($installpath, '.') == 0 ) {
 		$installpath=''; }
 	else {
