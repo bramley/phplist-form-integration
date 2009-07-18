@@ -3,20 +3,21 @@
 Plugin Name: PHPlist
 Plugin URI: http://www.jesseheap.com/projects/wordpress-phplist-plugin.php?ver=1.0
 Description: Allows you to easily integrate the PHPList subscribe form in your blog
-Version: 1.5
+Version: 1.6
 License: GPL
 Author: Jesse Heap
 Author URI: http://www.jesseheap.com
 Contributors:
  ==============================================================================
    Rich Cowan 							Initial idea for PHPList API
+   Rob Z at Web Geek Blog				Widget Support
 
 Thanks to Ryan Duff, creator of the Wordpress Contact form plug-in (http://ryanduff.net), for the
 Spam Handling Feature, CSS, and flexible design idea for dropping the subscriber form on any wordpress page.
 */
 /*Globals*/
 $admin_phplist_config_page = get_settings('siteurl') . '/wp-admin/options-general.php?page=phplist.php"';
-$ver='1.5';
+$ver='1.6';
 $default_list_size = 2;
 $o = phplist_get_options();
 
@@ -595,9 +596,17 @@ function phplist_css()
 	{
 	global $ver;
 	$phplist_wp_url = get_bloginfo('wpurl') . "/";
+	$phplist_wp_url = "http://blog.pinkcakebox.com/";
+	$installpath  = dirname('phplist/phplist.php'); // plugin_basename(dirname(__FILE__));
+	if (strcmp($installpath, '.') == 0 ) {
+		$installpath=''; }
+	else {
+		$installpath=$installpath . "/"; }
+	
 	echo "\n\t<!-- CSS Added By PhpList Plugin. Version {$ver} -->\n";
-    echo "\n\t<link href='{$phplist_wp_url}wp-content/plugins/phplist.css' rel='stylesheet' type='text/css' />";
+    echo "\n\t<link href='{$phplist_wp_url}wp-content/plugins/{$installpath}phplist.css' rel='stylesheet' type='text/css' />";
 	}
+
 
 function phplist_admin_menu() {
    if (function_exists('add_options_page')) {
