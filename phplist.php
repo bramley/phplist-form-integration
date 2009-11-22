@@ -3,7 +3,7 @@
 Plugin Name: PHPlist
 Plugin URI: http://www.jesseheap.com/projects/wordpress-phplist-plugin.php?ver=1.0
 Description: Allows you to easily integrate the PHPList subscribe form in your blog
-Version: 1.6
+Version: 1.7
 License: GPL
 Author: Jesse Heap
 Author URI: http://www.jesseheap.com

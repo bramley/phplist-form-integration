@@ -5,7 +5,7 @@ Donate link: http://projects.jesseheap.com
 Requires at least: 2.0.2
 Tested up to: 2.8.1
 Stable tag: trunk
-Version:1.6
+Version:1.7
 
 == Description ==
 
