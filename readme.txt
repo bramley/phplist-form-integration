@@ -3,7 +3,7 @@ Tags: phplist, integration, email newsletter
 Author:JesseHeap
 Donate link: http://projects.jesseheap.com
 Requires at least: 2.0.2
-Tested up to: 2.8.1
+Tested up to: 2.9
 Stable tag: trunk
 Version:1.7
 

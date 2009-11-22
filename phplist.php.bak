@@ -15,6 +15,8 @@ Contributors:
 Thanks to Ryan Duff, creator of the Wordpress Contact form plug-in (http://ryanduff.net), for the
 Spam Handling Feature, CSS, and flexible design idea for dropping the subscriber form on any wordpress page.
 */
+$plugin_dir = basename(dirname(__FILE__)) . '/languages/';
+load_plugin_textdomain( 'phplist', 'wp-content/plugins/' . $plugin_dir, $plugin_dir );
 /*Globals*/
 $admin_phplist_config_page = get_settings('siteurl') . '/wp-admin/options-general.php?page=phplist.php"';
 $ver='1.6';
@@ -45,10 +47,10 @@ function phplist_widget_init() {
 		if(phplist_check_input()) // If the input check returns true (ie. there has been a subscriber & input is ok)
 		{
 			   if(phplist_subscribe($_POST, true) === true) {
-			   		echo("<h3>Thank You For Subscribing</h3>");
+			   		echo("<h3>" . __('Thank You For Subscribing','phplist') . "</h3>");
 			   } else {
-			   		echo("<h3>An Error Occurred</h3>");
-			   		echo("<p>We were unable to add your email to our list. Please send us an email at <a href=\"mailto:support@getoutbayarea.com\">support@getoutbayarea.com</a> letting us know what happened and we'll make sure you get on the list.");
+			   		echo("<h3>" . __('An Error Occurred','phplist') . "</h3>");
+			   		echo("<p>" . __("We were unable to add your email to our list. Please send us an email at <a href=\"mailto:support@getoutbayarea.com\">support@getoutbayarea.com</a> letting us know what happened and we'll make sure you get on the list.",'phplist'));
 			   }
 		}
 		else // Else show the form. If there are errors the strings will have updated during running the inputcheck.
@@ -95,7 +97,7 @@ function phplist_subscribe($input_data, $widget=false) {
 	$skipConfirmationEmail = $o['php_list_skip_confirm'];               // Set to 0 if you require a confirmation email to be sent.
 
 	if (!phplist_check_curl()) {
-		echo 'CURL library not detected on system.  Need to compile php with cURL in order to use this plug-in';
+		_e('CURL library not detected on system.  Need to compile php with cURL in order to use this plug-in','phplist');
 	    return(0);
 		}
 //   $post_data = array();
@@ -127,7 +129,7 @@ function phplist_subscribe($input_data, $widget=false) {
 	// Ensure email is provided
 	$email = $post_data['email'];//
    if ($email == '') {
-         echo('You must supply an email address ' . $email);
+         printf(__("You must supply an email address %s",'phplist'), $email);
     return(0);
    }
 
@@ -147,7 +149,7 @@ function phplist_subscribe($input_data, $widget=false) {
    $result = curl_exec($ch);
    //echo("Result was: $result"); //debug
    if (curl_errno($ch)) {
-   print '<h3 style="color:red">Error: ' . curl_error($ch) . ' Check <a href=" '. $admin_phplist_config_page .'"> admin config options page.</a> </h3>';
+   printf('<h3 style="color:red">'. __('Error: %1$s .Check <a href="%2$s"> admin config options page.</a>','phplist'). ' </h3>', curl_error($ch) ,$admin_phplist_config_page );
    return(0);
 	}
 
@@ -167,11 +169,11 @@ function phplist_subscribe($input_data, $widget=false) {
 
    //echo('Result was: ' .$result);
    if (curl_errno($ch)) {
-   print '<h3 style="color:red">Error: ' . curl_error($ch) . ' Check <a href=" '. $admin_phplist_config_page .'"> admin config options page.</a> </h3>';
+   printf('<h3 style="color:red">'. __('Error: %1$s .Check <a href="%2$s"> admin config options page.</a>','phplist'). ' </h3>', curl_error($ch) ,$admin_phplist_config_page );
    return(0);
 	}
 	if(!$widget){
- 		echo ('<h3>Thank you for subscribing to our email list</h3>');
+ 		echo ('<h3>' . __('Thank you for subscribing to our email list') .'</h3>');
  	} else {
 		curl_close($ch);
 		return true;
@@ -236,7 +238,7 @@ function phplist_subpanel() {
 	 			}
 			if ($_POST['add_more']) {
 				$_POST['phplist']['php_list_maxLists'] = $_POST['phplist']['php_list_maxLists'] + 1;
-				$sub_mesg = ' and added additional line for Lists.  Make sure to enter List ID.';
+				$sub_mesg = __(' and added additional line for Lists.  Make sure to enter List ID.','phplist');
 			}
 			if ($_POST['reset']) {
 				$counter = $default_list_size;
@@ -246,15 +248,15 @@ function phplist_subpanel() {
 					 $o['php_list_listname'. $counter ] = '';
 				}
 				$_POST['phplist']['php_list_maxLists'] = $default_list_size;
-				$sub_mesg = 'and Reset List Count';
+				$sub_mesg = __('and Reset List Count','phplist');
 			}
 			update_option('phplistsettings', $_POST['phplist']);
-			$message = '<div class="updated"><p><strong>Options saved ' . $sub_mesg . '</strong></p></div>';
+			$message = '<div class="updated"><p><strong>' . __('Options saved','phplist') .' ' . $sub_mesg . '</strong></p></div>';
 			echo $message;
 		}
 
 	if (!phplist_check_curl()) {
-		echo 'CURL library not detected on system.  Need to compile php with cURL in order to use this plug-in';
+		_e('CURL library not detected on system.  Need to compile php with cURL in order to use this plug-in','phplist');
 	    return(0);
 		}
 
@@ -442,7 +444,7 @@ function phplist_check_input()
 	if (!(phplist_using_single_list($o))) {
 		$max_lists = (empty($o['php_list_maxLists'])) ? 4 : $o['php_list_maxLists'];
 		if (!is_array($_POST['list'])) {
-				$ok = false; $reason = 'No Mailing List';
+				$ok = false; $reason = __('No Mailing List','phplist');
 		}
 
 	}
@@ -468,16 +470,16 @@ function phplist_check_input()
 	}
 	else {
 		if($reason == 'malicious') {
-			$phplist_strings['error'] = "<div class='required'>You can not use any of the following in the Name or Email fields: a linebreak, or the phrases 'mime-version', 'content-type', 'cc:' or 'to:'.</div>";
+			$phplist_strings['error'] = "<div class='required'>". __("You can not use any of the following in the Name or Email fields: a linebreak, or the phrases 'mime-version', 'content-type', 'cc:' or 'to:'.",'phplist') . "</div>";
 			}
 		elseif($reason == 'empty') {
-			$phplist_strings['error'] = '<label for="Error"></label><div class="required">Missing Required Field </div>';
+			$phplist_strings['error'] = '<label for="Error"></label><div class="required">'. __('Missing Required Field','phplist') . '</div>';
 			}
 		 elseif($reason == 'Invalid Email')  {
-			$phplist_strings['error'] = '<label for="Error"></label><div class="required">Invalid Email</div>';
+			$phplist_strings['error'] = '<label for="Error"></label><div class="required">' . __('Invalid Email','phplist') . '</div>';
 			}
 		 elseif($reason == 'No Mailing List')  {
-			$phplist_strings['error'] = '<label for="Error"></label><div class="required">You Must Check a Mailing List</div>';
+			$phplist_strings['error'] = '<label for="Error"></label><div class="required">' . __('You Must Check a Mailing List','phplist') . '</div>';
 			}
 	   return false;
 	}
@@ -538,7 +540,7 @@ function phplist_generate_list_elements () {
 	}
 	else
 	{
-		$lists_mes = '<br><span style="caption">Please select the newsletters you want to sign up for:</span><br>';
+		$lists_mes = '<br><span style="caption">' . __('Please select the newsletters you want to sign up for:','phplist') . '</span><br>';
 		$lists_ul = '<ul class="list">';
 		$lists_li = '<li class="list">';
 		$lists_form = $lists_mes . $lists_ul;
@@ -587,7 +589,7 @@ function phplist_construct_form($widget = false) {
 			<div style="clear:both; height:1px;">&nbsp;</div>';
 			}
 		else { //Key configuration option has not been set - alert user.
-			$form = '<h3>Must <a href= "' . $admin_phplist_config_page . '"> configure options</a> under admin panel before using form</h3>';
+			$form = '<h3>' . sprintf(__('Must <a href= "%s"> configure options</a> under admin panel before using form','phplist'), $admin_phplist_config_page ). '</h3>';
 			}
 		return $form;
 }
@@ -596,8 +598,7 @@ function phplist_css()
 	{
 	global $ver;
 	$phplist_wp_url = get_bloginfo('wpurl') . "/";
-	$phplist_wp_url = "http://blog.pinkcakebox.com/";
-	$installpath  = dirname('phplist/phplist.php'); // plugin_basename(dirname(__FILE__));
+	$installpath  =  plugin_basename(dirname(__FILE__));
 	if (strcmp($installpath, '.') == 0 ) {
 		$installpath=''; }
 	else {
