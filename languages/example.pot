@@ -1,0 +1,109 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPList\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-20 23:05+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Aurélien POHU <aurelien@pohu.fr>\n"
+"Language-Team: Aurélien POHU <aurelien@pohu.fr>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2;plural=n>1\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+"X-Poedit-SourceCharset: iso-8859-1\n"
+"X-Poedit-KeywordsList: __;_e;_c\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: F:\\Bureau\\phplist-form-integration\\phplist-form-integration\n"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:48
+msgid "Thank You For Subscribing"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:50
+msgid "An Error Occurred"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:51
+msgid "We were unable to add your email to our list. Please send us an email at <a href=\"mailto:support@getoutbayarea.com\">support@getoutbayarea.com</a> letting us know what happened and we'll make sure you get on the list."
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:60
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:84
+msgid "PHPList Integration"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:66
+msgid "Sign Up For Our Newsletter"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:80
+msgid "Title:"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:98
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:257
+msgid "CURL library not detected on system.  Need to compile php with cURL in order to use this plug-in"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:130
+#, php-format
+msgid "You must supply an email address %s"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:150
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:170
+#, php-format
+msgid "Error: %1$s .Check <a href=\"%2$s\"> admin config options page.</a>"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:174
+msgid "Thank you for subscribing to our email list"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:239
+msgid " and added additional line for Lists.  Make sure to enter List ID."
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:249
+msgid "and Reset List Count"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:252
+msgid "Options saved"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:445
+msgid "No Mailing List"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:471
+msgid "You can not use any of the following in the Name or Email fields: a linebreak, or the phrases 'mime-version', 'content-type', 'cc:' or 'to:'."
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:474
+msgid "Missing Required Field"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:477
+msgid "Invalid Email"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:480
+msgid "You Must Check a Mailing List"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:541
+msgid "Please select the newsletters you want to sign up for:"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:584
+msgid "Submit"
+msgstr ""
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:590
+#, php-format
+msgid "Must <a href= \"%s\"> configure options</a> under admin panel before using form"
+msgstr ""
+
