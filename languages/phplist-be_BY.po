@@ -1,0 +1,109 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PHPList\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-11-20 23:05+0100\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Fat Cow <zhr@tut.by>\n"
+"Language-Team: FatCow <zhr@tut.by>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2;plural=n>1\n"
+"X-Poedit-Language: Belarusian\n"
+"X-Poedit-Country: BELARUS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;_c\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: F:\\Bureau\\phplist-form-integration\\phplist-form-integration\n"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:48
+msgid "Thank You For Subscribing"
+msgstr "Спасибо за подписку!"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:50
+msgid "An Error Occurred"
+msgstr "Обнаружена ошибка"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:51
+msgid "We were unable to add your email to our list. Please send us an email at <a href=\"mailto:support@getoutbayarea.com\">support@getoutbayarea.com</a> letting us know what happened and we'll make sure you get on the list."
+msgstr "Нам не удалось добавить ваш электронный к нашему списку. Пожалуйста, отправьте нам письмо на <a href=\"mailto:support@getoutbayarea.com\">support@getoutbayarea.com</a> давая нам знать, что произошло, и мы позаботимся, вы получите в списке."
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:60
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:84
+msgid "PHPList Integration"
+msgstr "PHPList интеграция"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:66
+msgid "Sign Up For Our Newsletter"
+msgstr "Подпишитесь на нашу Рассылку"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:80
+msgid "Title:"
+msgstr "Название:"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:98
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:257
+msgid "CURL library not detected on system.  Need to compile php with cURL in order to use this plug-in"
+msgstr "CURL библиотеки не найдены на системе. Необходимо собрать PHP с CURL с тем, чтобы использовать этот плагин"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:130
+#, php-format
+msgid "You must supply an email address %s"
+msgstr "Вы должны указать адрес электронной почты %s"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:150
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:170
+#, php-format
+msgid "Error: %1$s .Check <a href=\"%2$s\"> admin config options page.</a>"
+msgstr "Ошибка: %1$s .Проверьте <a href=\"%2$s\"> конфиг на странце опций.</a>"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:174
+msgid "Thank you for subscribing to our email list"
+msgstr "Спасибо за подписку!"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:239
+msgid " and added additional line for Lists.  Make sure to enter List ID."
+msgstr "и добавить дополнительные строки для списков. Убедитесь в том, что вы ввели список ID."
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:249
+msgid "and Reset List Count"
+msgstr "Сброс счет списка "
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:252
+msgid "Options saved"
+msgstr "Опции сохранены"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:445
+msgid "No Mailing List"
+msgstr "Нет списка подписчиков"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:471
+msgid "You can not use any of the following in the Name or Email fields: a linebreak, or the phrases 'mime-version', 'content-type', 'cc:' or 'to:'."
+msgstr "Вы не можете использовать любое из следующих действий в название или по электронной почте областях: в неоднородных или фразу 'mime-version', 'content-type', 'cc:' или  'to:'."
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:474
+msgid "Missing Required Field"
+msgstr "Необходимые поля не заполнены"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:477
+msgid "Invalid Email"
+msgstr "Неправильный Email"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:480
+msgid "You Must Check a Mailing List"
+msgstr "Вы должны проверить список рассылки"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:541
+msgid "Please select the newsletters you want to sign up for:"
+msgstr "Пожалуйста, выберите бюллетени, на которые вы хотите подписаться:"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:584
+msgid "Submit"
+msgstr "Отправить"
+
+#: F:\Bureau\phplist-form-integration\phplist-form-integration/phplist.php:590
+#, php-format
+msgid "Must <a href= \"%s\"> configure options</a> under admin panel before using form"
+msgstr "Нужно <a href= \"%s\">настроить параметры</a> под панель администратора, прежде чем использовать форму"
+
