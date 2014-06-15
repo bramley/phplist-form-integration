@@ -23,11 +23,23 @@ $ver='1.6';
 $default_list_size = 2;
 $o = phplist_get_options();
 
+/*$phplist_strings = array(
+	'field1' => "<input type='text' name='{$o['php_list_txt_id']}' id='{$o['php_list_txt_id']}' size='{$o['php_list_txt_size']}' "
+        . "onclick=\"if (this.defaultValue == this.value) this.value=''\" onblur=\"if (this.value == '') this.value=this.defaultValue\"" 
+        . " maxlength=\"{$o['php_list_txt_max']}\"" . " value=\"{$o['php_list_txt_label']}\"   /> <br/>",
+	'field2' => "<input type='text' name='{$o['php_list_txt2_id']}' id='{$o['php_list_txt2_id']}' size='{$o['php_list_txt2_size']}' "
+        . "onclick=\"if (this.defaultValue == this.value) this.value=''\" onblur=\"if (this.value == '') this.value=this.defaultValue\"" 
+        . " maxlength=\"{$o['php_list_txt2_max']}\"" . " value=\"{$o['php_list_txt2_label']}\"   /> <br/>",
+	'email' => "<input type='text' name='email' id='email' size='{$o['php_list_email_size']}' "
+        . "onclick=\"if (this.defaultValue == this.value) this.value=''\" onblur=\"if (this.value == '') this.value=this.defaultValue\"" 
+        . " maxlength=\"{$o['php_list_email_max']}\"" . " value=\"email\"   /> <br/>",
+	'error' => '');
+*/
 $phplist_strings = array(
 	'field1' => '<input type="text" name="'. $o['php_list_txt_id'] . '" id="'. $o['php_list_txt_id'] .'" size="'. $o['php_list_txt_size'] .'" maxlength="'. $o['php_list_txt_max'] .'" value="' . paranoid($_POST[$o['php_list_txt_id']], array('-', ' ')) . '"   /> <br/>',
+	'field2' => '<input type="text" name="'. $o['php_list_txt2_id'] . '" id="'. $o['php_list_txt2_id'] .'" size="'. $o['php_list_txt2_size'] .'" maxlength="'. $o['php_list_txt2_max'] .'" value="' . paranoid($_POST[$o['php_list_txt2_id']], array('-', ' ')) . '"   /> <br/>',
 	'email' => '<input type="text" name="email" id="email" size="'. $o['php_list_email_size'] .'" maxlength="'. $o['php_list_email_max'] .'" value="'. paranoid($_POST['email'], array('@', '.', '_', '-')) .'"  /> <br/>',
 	'error' => '');
-
 
 add_action('widgets_init', 'phplist_widget_init');
 
@@ -39,29 +51,28 @@ function phplist_widget_init() {
 
 	function phplist_widget($args) {
 		extract($args);
-		$options = get_option('phplist_widget');
+		$options = get_option('phplist_widget') + phplist_get_options();
 		$title = $options['title'];
 		if (empty($title)) {
 		}
 		echo $before_widget . $before_title . $title . $after_title;
 		if(phplist_check_input()) // If the input check returns true (ie. there has been a subscriber & input is ok)
 		{
-			   if(phplist_subscribe($_POST, true) === true) {
-			   		echo("<h3>" . __('Thank You For Subscribing','phplist') . "</h3>");
-			   } else {
-			   		echo("<h3>" . __('An Error Occurred','phplist') . "</h3>");
-			   		echo("<p>" . __("We were unable to add your email to our list. Please send us an email at <a href=\"mailto:support@getoutbayarea.com\">support@getoutbayarea.com</a> letting us know what happened and we'll make sure you get on the list.",'phplist'));
-			   }
-		}
-		else // Else show the form. If there are errors the strings will have updated during running the inputcheck.
-		{
+           if(phplist_subscribe($_POST, true) === true) {
+                echo("<p>" . __($options['php_list_ack'],'phplist') . "</p>");
+           } else {
+                echo("<h3>" . __('An Error Occurred','phplist') . "</h3>");
+                echo("<p>" . __("We were unable to add your email to our list. Please send us an email at <a href=\"mailto:support@getoutbayarea.com\">support@getoutbayarea.com</a> letting us know what happened and we'll make sure you get on the list.",'phplist'));
+           }
+		} else {
 			echo phplist_construct_form(true);
 		}
 		echo $after_widget;
 	}
 	register_sidebar_widget(array(__('PHPList Integration', 'phplist'), 'widgets'), 'phplist_widget');
 
-	function phplist_widget_control() {
+	function phplist_widget_control()
+    {
 		$options = get_option('phplist_widget');
 		if (!is_array($options)) {
 			$options = array(
@@ -89,12 +100,14 @@ function phplist_widget_init() {
 
 function phplist_subscribe($input_data, $widget=false) {
     global $admin_phplist_config_page;
-	$o=phplist_get_options();
+
+	$o = phplist_get_options();
   	$domain = $o['php_list_uri'];
-	$lid =$o['php_list_listid'];      // lid is the default PHPlist List ID to use
+	$lid =$o['php_list_listid'];
 	$login =  $o['php_list_login'];
 	$pass = $o['php_list_pass'];
-	$skipConfirmationEmail = $o['php_list_skip_confirm'];               // Set to 0 if you require a confirmation email to be sent.
+	$skipConfirmationEmail = $o['php_list_skip_confirm'];
+	$subscribePageId = $o['php_list_subsid'];
 
 	if (!phplist_check_curl()) {
 		_e('CURL library not detected on system.  Need to compile php with cURL in order to use this plug-in','phplist');
@@ -135,42 +148,47 @@ function phplist_subscribe($input_data, $widget=false) {
 
 // 3) Login to phplist as admin and save cookie using CURLOPT_COOKIEFILE
 // NOTE: Must log in as admin in order to bypass email confirmation
-   $url = $domain . "admin/?";
-   $ch = curl_init();
-   $login_data = array();
-   $login_data["login"] = $login;
-   $login_data["password"] = $pass;
-   curl_setopt($ch, CURLOPT_POST, 1);
-   curl_setopt($ch, CURLOPT_URL, $url);
-   curl_setopt($ch, CURLOPT_POSTFIELDS, $login_data);
-   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-   curl_setopt($ch, CURLOPT_COOKIEFILE, ""); //Enable Cookie Parser.
-   //File does not need to exist - http://curl.netmirror.org/libcurl/c/libcurl-tutorial.html for more info
-   $result = curl_exec($ch);
-   //echo("Result was: $result"); //debug
-   if (curl_errno($ch)) {
-   printf('<h3 style="color:red">'. __('Error: %1$s .Check <a href="%2$s"> admin config options page.</a>','phplist'). ' </h3>', curl_error($ch) ,$admin_phplist_config_page );
-   return(0);
-	}
+    $ch = curl_init();
+
+    if ($skipConfirmationEmail) {
+        $url = $domain . "admin/?";
+        $login_data = array();
+        $login_data["login"] = $login;
+        $login_data["password"] = $pass;
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $login_data);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, ""); //Enable Cookie Parser.
+        //File does not need to exist - http://curl.netmirror.org/libcurl/c/libcurl-tutorial.html for more info
+        $result = curl_exec($ch);
+        //echo("Result was: $result"); //debug
+        if (curl_errno($ch)) {
+            printf('<h3 style="color:red">'. __('Error: %1$s .Check <a href="%2$s"> admin config options page.</a>','phplist'). ' </h3>', curl_error($ch) ,$admin_phplist_config_page );
+            return(0);
+        }
+    }
 
 // 3) Now simulate post to subscriber form.
-   $post_data["emailconfirm"] = $email;
-   $post_data["htmlemail"] = "1";
- // No longer required  $post_data["list[$lid]"] = "signup";
-   $post_data["subscribe"] = "Subscribe";
-   $post_data["makeconfirmed"] = $skipConfirmationEmail;  //If set to 1 it will confirm user bypassing confirmation email
-   $url = $domain . "?p=subscribe";
+    $post_data["emailconfirm"] = $email;
+    $post_data["htmlemail"] = "1";
+    $post_data["subscribe"] = "Subscribe";
 
-   curl_setopt($ch, CURLOPT_POST, 1);
-   curl_setopt($ch, CURLOPT_URL, $url);
-   curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-   $result = curl_exec($ch);
+    if ($skipConfirmationEmail) {
+        $post_data["makeconfirmed"] = $skipConfirmationEmail;
+    }
+    $url = $domain . "?p=subscribe&id=$subscribePageId";
 
-   //echo('Result was: ' .$result);
-   if (curl_errno($ch)) {
-   printf('<h3 style="color:red">'. __('Error: %1$s .Check <a href="%2$s"> admin config options page.</a>','phplist'). ' </h3>', curl_error($ch) ,$admin_phplist_config_page );
-   return(0);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $result = curl_exec($ch);
+
+    //echo('Result was: ' .$result);
+    if (curl_errno($ch)) {
+        printf('<h3 style="color:red">'. __('Error: %1$s .Check <a href="%2$s"> admin config options page.</a>','phplist'). ' </h3>', curl_error($ch) ,$admin_phplist_config_page );
+        return(0);
 	}
 	if(!$widget){
  		echo ('<h3>' . __('Thank you for subscribing to our email list') .'</h3>');
@@ -178,8 +196,7 @@ function phplist_subscribe($input_data, $widget=false) {
 		curl_close($ch);
 		return true;
 	}
-//) Clean up
-   curl_close($ch);
+    curl_close($ch);
 
  }  // end of function
 
@@ -230,35 +247,36 @@ function phplist_check_curl() {
 function phplist_subpanel() {
 	global $ver;
 	global $default_list_size;
-		if ($_POST['phplist']){
-		    //Check for trailing slash
-			  $option_phplisturi = $_POST['phplist']['php_list_uri'];
-			  if  (strcmp($option_phplisturi[strlen($option_phplisturi)-1], '/') !=0) {
-	 				$_POST['phplist']['php_list_uri'] .= '/';
-	 			}
-			if ($_POST['add_more']) {
-				$_POST['phplist']['php_list_maxLists'] = $_POST['phplist']['php_list_maxLists'] + 1;
-				$sub_mesg = __(' and added additional line for Lists.  Make sure to enter List ID.','phplist');
-			}
-			if ($_POST['reset']) {
-				$counter = $default_list_size;
-				$max_lists = (empty($o['php_list_maxLists'])) ? $default_list_size : $o['php_list_maxLists'];
-				for ($counter; $counter <$max_lists; $counter += 1) {
-					 $o['php_list_listid' . $counter] = '';
-					 $o['php_list_listname'. $counter ] = '';
-				}
-				$_POST['phplist']['php_list_maxLists'] = $default_list_size;
-				$sub_mesg = __('and Reset List Count','phplist');
-			}
-			update_option('phplistsettings', $_POST['phplist']);
-			$message = '<div class="updated"><p><strong>' . __('Options saved','phplist') .' ' . $sub_mesg . '</strong></p></div>';
-			echo $message;
-		}
+
+    if ($_POST['phplist']) {
+        //Check for trailing slash
+        $option_phplisturi = $_POST['phplist']['php_list_uri'];
+        if  (strcmp($option_phplisturi[strlen($option_phplisturi)-1], '/') !=0) {
+            $_POST['phplist']['php_list_uri'] .= '/';
+        }
+        if ($_POST['add_more']) {
+            $_POST['phplist']['php_list_maxLists'] = $_POST['phplist']['php_list_maxLists'] + 1;
+            $sub_mesg = __(' and added additional line for Lists.  Make sure to enter List ID.','phplist');
+        }
+        if ($_POST['reset']) {
+            $counter = $default_list_size;
+            $max_lists = (empty($o['php_list_maxLists'])) ? $default_list_size : $o['php_list_maxLists'];
+            for ($counter; $counter <$max_lists; $counter += 1) {
+                 $o['php_list_listid' . $counter] = '';
+                 $o['php_list_listname'. $counter ] = '';
+            }
+            $_POST['phplist']['php_list_maxLists'] = $default_list_size;
+            $sub_mesg = __('and Reset List Count','phplist');
+        }
+        update_option('phplistsettings', $_POST['phplist']);
+        $message = '<div class="updated"><p><strong>' . __('Options saved','phplist') .' ' . $sub_mesg . '</strong></p></div>';
+        echo $message;
+    }
 
 	if (!phplist_check_curl()) {
 		_e('CURL library not detected on system.  Need to compile php with cURL in order to use this plug-in','phplist');
 	    return(0);
-		}
+	}
 
 	$o = phplist_get_options();
 	$skip_confirmation_chkbox = ($o['php_list_skip_confirm'] == 1) ? ' checked="checked"' : '';
@@ -269,10 +287,10 @@ function phplist_subpanel() {
     $counter=1;
 	for ($counter; $counter <$max_lists; $counter += 1) {
 		$lists = $lists . '<tr>
-              <td><input name="phplist[php_list_listid' . $counter . ']" type="text" id="phplist[php_list_listid' . $counter . ']" value="' . $o['php_list_listid' . $counter] .'" size="50" /></td>
-              <td><input name="phplist[php_list_listname' . $counter .']" type="text" id="phplist[php_list_listname' . $counter . ']" value="' . $o['php_list_listname'. $counter ] .'" size="50"/></td></tr>';
+              <td><input name="phplist[php_list_listid' . $counter . ']" type="text" id="phplist[php_list_listid' . $counter . ']" value="' . $o['php_list_listid' . $counter] .'" size="4" /></td>
+              <td><input name="phplist[php_list_listname' . $counter .']" type="text" id="phplist[php_list_listname' . $counter . ']" value="' . $o['php_list_listname'. $counter ] .'" size="20"/></td></tr>';
 	}
-  echo <<<EOT
+    echo <<<EOT
     <div class="wrap">
          <h2>General Settings</h2>
 		<form method="post">
@@ -290,13 +308,17 @@ function phplist_subpanel() {
           <td><p><strong><label for="php_list_pass">PHPList Admin Password</label></strong></td>
           <td><input name="phplist[php_list_pass]" type="password" id="php_list_pass" value="{$o['php_list_pass']}" size="50" /> <em>Enter PHPList Admin Password</em></p></td>
          </tr>
+		 <tr>
+          <td><p><strong><label for="php_list_subsid">PHPList Subscribe Page Id</label></strong></td>
+          <td><input name="phplist[php_list_subsid]" type="text" id="php_list_subsid" value="{$o['php_list_subsid']}" size="4" /> <em>PHPList Subscribe Page Id</em></p></td>
+         </tr>
 		  <tr>
-          <td valign="top"><p><strong><label for="php_list_listid">PHPList List Information</label></strong></td>
+          <td valign="top"><p><strong><label for="php_list_listid1">PHPList List Information</label></strong></td>
           <td>
 		  <table width="100%" border="0">
             <tr>
-              <td><em><b>Enter PHPList ID</b></em></td>
-              <td><em><b>Enter Name of List</b></em></td>
+              <td><em><b>PHPList ID</b></em></td>
+              <td><em><b>Name of List</b></em></td>
             </tr>
 				{$lists}
           </table>
@@ -308,9 +330,21 @@ function phplist_subpanel() {
             </td>
          </tr>
 		 <tr>
-		  <td></td>
-		  <td><p><input name="phplist[php_list_skip_confirm]" type="checkbox" id="php_list_skip_confirm" value="1" {$skip_confirmation_chkbox}/>  <label for="php_list_skip_confirm"><strong>Skip Confirmation Email</strong> (Check to bypass confirmation email)</label></p></td>
+		  <td><label for="php_list_skip_confirm"><strong>Make confirmed immediately</strong></label></td>
+		  <td><input name="phplist[php_list_skip_confirm]" type="checkbox" id="php_list_skip_confirm" value="1" {$skip_confirmation_chkbox}/> <em>Check to not send a confirmation email<em></td>
 		 </tr>
+         <tr>
+          <td><p><strong><label for="php_list_preamble">Preamble</label></strong></td>
+          <td><textarea name="phplist[php_list_preamble]" cols="50" rows="3" id="php_list_preamble" >{$o['php_list_preamble']}</textarea><br/>
+          <em>HTML of preamble</em></p>
+          </td>
+         </tr>
+         <tr>
+          <td><p><strong><label for="php_list_ack">Acknowledgement message</label></strong></td>
+          <td><textarea name="phplist[php_list_ack]" cols="50" rows="3" id="php_list_ack" >{$o['php_list_ack']}</textarea><br/>
+          <em>HTML of acknowledgement message</em></p>
+          </td>
+         </tr>
         </table>
         </fieldset>
         <div class="submit">
@@ -358,6 +392,17 @@ function phplist_subpanel() {
         <td><input name="phplist[php_list_txt_size]" type="text" id="php_list_txt_size" value="{$o['php_list_txt_size']}" size="5" /></td>
         <td><input name="phplist[php_list_txt_max]" type="text" id="php_list_txt_max" value="{$o['php_list_txt_max']}" size="5" /></td>
         <td><input name="phplist[php_list_txt_req]" type="checkbox" id="php_list_txt_req" value="1"  {$optional_field_req} /></td>
+      </tr>
+      <tr>
+        <td><input name="phplist[php_list_txt2_show]" type="checkbox" id="php_list_txt2_show" value="1" {$show_optional_field} />
+        </td>
+        <td><input name="phplist[php_list_txt2_label]" type="text" id="php_list_txt2_label" value="{$o['php_list_txt2_label']}" size="20" />
+        </td>
+        <td><input name="phplist[php_list_txt2_id]" type="text" id="php_list_txt2_id" value="{$o['php_list_txt2_id']}" size="20" />
+        </td>
+        <td><input name="phplist[php_list_txt2_size]" type="text" id="php_list_txt2_size" value="{$o['php_list_txt2_size']}" size="5" /></td>
+        <td><input name="phplist[php_list_txt2_max]" type="text" id="php_list_txt2_max" value="{$o['php_list_txt2_max']}" size="5" /></td>
+        <td><input name="phplist[php_list_txt2_req]" type="checkbox" id="php_list_txt2_req" value="1"  {$optional_field_req} /></td>
       </tr>
       <tr>
         <td><em>Check to show field on form</em></em></td>
@@ -435,6 +480,7 @@ function phplist_check_input()
 	$o = phplist_get_options();
     $required = $o['php_list_txt_req'];
 	$txt_id = $o['php_list_txt_id'];
+	$txt_label = $o['php_list_txt_label'];
 	$txt_size = $o['php_list_txt_size'];
 	$txt_max = $o['php_list_txt_max'];
 	$txt_show = $o['php_list_txt_show'];
@@ -448,11 +494,12 @@ function phplist_check_input()
 		}
 
 	}
-	if (strlen($required)>0 && $txt_show) {
-			if(empty($_POST[$txt_id]))  {
-				$ok = false; $reason = 'empty';
-				$phplist_strings['field1'] = '<input class="requiredOutline" type="text" name="'. $txt_id .'" id="' . $txt_id .'" size="' . $txt_size . '" maxlength="'. $txt_max . '" value="' .$optionvalue . '"  /> <br class="br" /> ';
-			}
+	if ($required && $txt_show) {
+        if (empty($_POST[$txt_id]) || $_POST[$txt_id] == $txt_label)  {
+            $ok = false; 
+            $reason = 'empty';
+            $phplist_strings['field1'] = '<input class="requiredOutline" type="text" name="'. $txt_id .'" id="' . $txt_id .'" size="' . $txt_size . '" maxlength="'. $txt_max . '" value="' .$optionvalue . '"  /> <br class="br" /> ';
+        }
 	}
     if(!is_email($email))
     {
@@ -555,43 +602,58 @@ function phplist_generate_list_elements () {
 	}
 	return $lists_form;
 }
-function phplist_construct_form($widget = false) {
+function phplist_construct_form($widget = false)
+{
 	global $phplist_strings, $admin_phplist_config_page;
+
 	if($widget) {
 		$labelBreak = '<br />';
 	} else {
 		$labelBreak = '';
 	}
 	$o = phplist_get_options();
-       if (strlen($o['php_list_uri'])>0) {
-			$label_name = $o['php_list_txt_label'];
-			$txt_id = $o['php_list_txt_id'];
-			$email_name = $o['php_list_email'];
-			$txt_show = $o['php_list_txt_show'];
+    if (strlen($o['php_list_uri']) > 0) {
+        $label_name = $o['php_list_txt_label'];
+        $txt_id = $o['php_list_txt_id'];
+        $email_name = $o['php_list_email'];
+        $txt_show = $o['php_list_txt_show'];
+        $label2_name = $o['php_list_txt2_label'];
+        $txt2_id = $o['php_list_txt2_id'];
+        $txt2_show = $o['php_list_txt2_show'];
 
-			if ($txt_show==true)  {
-				$txt_optional_field = '<label for="'. $txt_id . '" '. (strlen($o['php_list_txt_req'])>0 ? 'class="required"':  '') . '>' . __($label_name, 'phplist') . '</label>'.$labelBreak.$phplist_strings['field1'];
-			}
-			else {
-				$txt_optional_field = '';
-			}
+        if ($txt_show==true)  {
+            $txt_optional_field = '<label for="'. $txt_id . '" '. (strlen($o['php_list_txt_req'])>0 ? 'class="required"':  '') . '>' . __($label_name, 'phplist') . '</label>'.$labelBreak.$phplist_strings['field1'];
+        }
+        else {
+            $txt_optional_field = '';
+        }
+        if ($txt2_show==true)  {
+            $txt2_optional_field = '<label for="'. $txt2_id . '" '. (strlen($o['php_list_txt2_req'])>0 ? 'class="required"':  '') . '>' . __($label2_name, 'phplist') . '</label>'.$labelBreak.$phplist_strings['field2'];
+        }
+        else {
+            $txt2_optional_field = '';
+        }
 
-			$form = '
-				<form action="" method="post" class="phplist">
-			' . $phplist_strings['error'] . '
-				' . $txt_optional_field . '
-			    <label for="email" class="required">' . __($email_name, 'phplist') . '</label>'.$labelBreak. $phplist_strings['email'] . '
-					'. phplist_generate_list_elements() . '
-					<label for="kludge"></label>
-					<input type="submit" name="Submit" value="' . __('Submit', 'phplist') . '" id="contactsubmit" />
-					<input type="hidden" name="phplist_submit" value="process" />
-				</form>
-			<div style="clear:both; height:1px;">&nbsp;</div>';
-			}
-		else { //Key configuration option has not been set - alert user.
-			$form = '<h3>' . sprintf(__('Must <a href= "%s"> configure options</a> under admin panel before using form','phplist'), $admin_phplist_config_page ). '</h3>';
-			}
-		return $form;
+        $format = <<<END
+<form action="#phplist-integration" method="post" class="phplist">
+{$o['php_list_preamble']}
+{$phplist_strings['error']}
+$txt_optional_field
+$txt2_optional_field
+<label for="email" class="required"> %s </label>$labelBreak {$phplist_strings['email']}
+%s
+<label for="kludge"></label>
+<div style="display:none"> <input name="VerificationCodeX" value="" size="20" type="text"></div>
+<input type="submit" name="Submit" value="%s" id="contactsubmit" />
+<input type="hidden" name="phplist_submit" value="process" />
+</form>
+<div style="clear:both; height:1px;">&nbsp;</div>
+END;
+        $form = sprintf($format, __($email_name, 'phplist'), phplist_generate_list_elements(), __('Submit', 'phplist'));
+    } else {
+        $form = '<h3>' . sprintf(__('Must <a href= "%s"> configure options</a> under admin panel before using form','phplist'), $admin_phplist_config_page ). '</h3>';
+    }
+    return $form;
 }
 /*CSS Styling*/
 function phplist_css()
